@@ -2,20 +2,27 @@
 
 namespace ZfcUser\Form;
 
-use Zend\InputFilter\InputFilter,
-    ZfcUser\Module as ZfcUser;
+use Zend\InputFilter\InputFilter;
+use ZfcUser\Module as ZfcUser;
+use ZfcUser\Option\RegistrationOptionsInterface;
 
 class RegisterFilter extends InputFilter
 {
     protected $emailValidator;
     protected $usernameValidator;
 
-    public function __construct($emailValidator, $usernameValidator)
+    /**
+     * @var RegistrationOptionsInterface
+     */
+    protected $options;
+
+    public function __construct($emailValidator, $usernameValidator, RegistrationOptionsInterface $options)
     {
+        $this->options = $options;
         $this->emailValidator = $emailValidator;
         $this->usernameValidator = $usernameValidator;
 
-        if (ZfcUser::getOption('enable_username')) {
+        if ($this->getOptions()->getEnableUsername()) {
             $this->add(array(
                 'name'          => 'username',
                 'required'      => true,
@@ -43,7 +50,7 @@ class RegisterFilter extends InputFilter
             ),
         ));
 
-        if (ZfcUser::getOption('enable_display_name')) {
+        if ($this->getOptions()->getEnableDisplayName()) {
             $this->add(array(
                 'name'          => 'display_name',
                 'required'      => true,
@@ -118,4 +125,26 @@ class RegisterFilter extends InputFilter
         $this->usernameValidator = $usernameValidator;
         return $this;
     }
+
+    /**
+     * set options
+     *
+     * @param RegistrationOptionsInterface $options
+     */
+    public function setOptions(RegistrationOptionsInterface $options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * get options
+     *
+     * @return RegistrationOptionsInterface
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+
 }

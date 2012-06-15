@@ -1,15 +1,13 @@
 <?php
 
-namespace ZfcUser\Model;
-
-use ZfcBase\Model\AbstractModel;
+namespace ZfcUser\Entity;
 
 /**
  * This concept is shamlessly borrowed from Wordpress.
  * @see http://codex.wordpress.org/Function_Reference/get_user_meta
  * @see http://codex.wordpress.org/Database_Description#Table:_wp_usermeta
  */
-class UserMeta extends AbstractModel implements UserMetaInterface
+class UserMeta implements UserMetaInterface
 {
     /**
      * @var User

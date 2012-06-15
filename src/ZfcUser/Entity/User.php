@@ -1,11 +1,10 @@
 <?php
 
-namespace ZfcUser\Model;
+namespace ZfcUser\Entity;
 
 use DateTime;
-use ZfcBase\Model\AbstractModel;
 
-class User extends AbstractModel implements UserInterface
+class User implements UserInterface
 {
     protected $user_id;
 
@@ -43,7 +42,7 @@ class User extends AbstractModel implements UserInterface
      * Set user_id.
      *
      * @param int $userId the value to be set
-     * @return UserBase
+     * @return User
      */
     public function setUserId($userId)
     {
@@ -65,7 +64,7 @@ class User extends AbstractModel implements UserInterface
      * Set username.
      *
      * @param string $username the value to be set
-     * @return UserBase
+     * @return User
      */
     public function setUsername($username)
     {
@@ -87,7 +86,7 @@ class User extends AbstractModel implements UserInterface
      * Set email.
      *
      * @param string $email the value to be set
-     * @return UserBase
+     * @return User
      */
     public function setEmail($email)
     {
@@ -116,7 +115,7 @@ class User extends AbstractModel implements UserInterface
      * Set display_name.
      *
      * @param string $displayName the value to be set
-     * @return UserBase
+     * @return User
      */
     public function setDisplayName($displayName)
     {
@@ -138,7 +137,7 @@ class User extends AbstractModel implements UserInterface
      * Set password.
      *
      * @param string $password the value to be set
-     * @return UserBase
+     * @return User
      */
     public function setPassword($password)
     {
@@ -159,16 +158,12 @@ class User extends AbstractModel implements UserInterface
     /**
      * Set last_login.
      *
-     * @param mixed $lastLogin the value to be set
-     * @return UserBase
+     * @param DateTime $lastLogin the value to be set
+     * @return User
      */
-    public function setLastLogin($lastLogin)
+    public function setLastLogin(DateTime $lastLogin)
     {
-        if ($lastLogin instanceof DateTime) {
-            $this->last_login = $lastLogin;
-        } else {
-            $this->last_login = new DateTime($lastLogin);
-        }
+        $this->last_login = $lastLogin;
         return $this;
     }
  
@@ -192,7 +187,7 @@ class User extends AbstractModel implements UserInterface
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
      * @param $lastIp the value to be set
-     * @return UserBase
+     * @return User
      */
     public function setLastIp($lastIp)
     {
@@ -213,16 +208,12 @@ class User extends AbstractModel implements UserInterface
     /**
      * Set register_time.
      *
-     * @param string $registerTime the value to be set
-     * @return UserBase
+     * @param DateTime $registerTime the value to be set
+     * @return User
      */
-    public function setRegisterTime($registerTime)
+    public function setRegisterTime(DateTime $registerTime)
     {
-        if ($registerTime instanceof DateTime) {
-            $this->register_time = $registerTime;
-        } else {
-            $this->register_time = new DateTime($registerTime);
-        }
+        $this->register_time = $registerTime;
         return $this;
     }
  
@@ -246,7 +237,7 @@ class User extends AbstractModel implements UserInterface
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
      * @param $registerIp the value to be set
-     * @return UserBase
+     * @return User
      */
     public function setRegisterIp($registerIp)
     {
@@ -268,10 +259,11 @@ class User extends AbstractModel implements UserInterface
      * Set active.
      *
      * @param bool $active the value to be set
+     * @return User
      */
     public function setActive($active)
     {
-        $this->active = $active;
+        $this->active = (bool) $active;
         return $this;
     }
  
@@ -289,10 +281,11 @@ class User extends AbstractModel implements UserInterface
      * Set enabled.
      *
      * @param bool $enabled the value to be set
+     * @return User
      */
     public function setEnabled($enabled)
     {
-        $this->enabled = $enabled;
+        $this->enabled = (bool) $enabled;
         return $this;
     }
 }

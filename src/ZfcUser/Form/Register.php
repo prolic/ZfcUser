@@ -5,23 +5,30 @@ namespace ZfcUser\Form;
 use Zend\Form\Element\Captcha as Captcha;
 use Zend\Form\Form;
 use ZfcUser\Module;
+use ZfcUser\Option\RegistrationOptionsInterface;
 
 class Register extends Base
 {
     protected $captcha_element= null;
 
-    public function __construct()
+    /**
+     * @var RegistrationOptionsInterface
+     */
+    protected $options;
+
+    public function __construct(RegistrationOptionsInterface $options)
     {
+        $this->setOptions($options);
         parent::__construct();
         
         $this->remove('userId');
-        if (!Module::getOption('enable_username')) {
+        if (!$this->getOptions()->getEnableUsername()) {
             $this->remove('username');
         }
-        if (!Module::getOption('enable_display_name')) {
+        if (!$this->getOptions()->getEnableDisplayName()) {
             $this->remove('display_name');
         }
-        if (Module::getOption('registration_form_captcha') && $this->captcha_element) {
+        if ($this->getOptions()->getUseRegistrationFormCaptcha() && $this->captcha_element) {
             $this->add($this->captcha_element, array('name'=>'captcha'));
         }
         $this->get('submit')->setAttribute('Label', 'Register');
@@ -36,4 +43,28 @@ class Register extends Base
     {
         parent::initLate();
     }
+
+    /**
+     * set options
+     *
+     * @param RegistrationOptionsInterface $options
+     * @return Register
+     */
+    public function setOptions(RegistrationOptionsInterface $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * get options
+     *
+     * @return RegistrationOptionsInterface
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+
 }

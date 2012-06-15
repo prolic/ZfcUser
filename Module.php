@@ -13,12 +13,7 @@ class Module implements
     ConfigProviderInterface, 
     ServiceProviderInterface
 {
-    protected static $options;
 
-    public function init(ModuleManager $moduleManager)
-    {
-        $moduleManager->events()->attach('loadModules.post', array($this, 'modulesLoaded'));
-    }
 
     public function getAutoloaderConfig()
     {
@@ -46,10 +41,34 @@ class Module implements
                 'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
-                'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcUserAuthentication'             => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
             ),
             'factories' => array(
+
+                'zfcuser_user_controller_options' => function ($sm) {
+                    return $sm->get('zfcuser_module_options');
+                },
+
+                'zfcuser_user_service_options' => function ($sm) {
+                    return $sm->get('zfcuser_module_options');
+                },
+
+                'zfcuser_registeroptions' => function ($sm) {
+                    return $sm->get('zfcuser_module_options');
+                },
+
+                'zfcuser_module_options' => function ($sm) {
+                    $config = $sm->get('Configuration');
+                    $zfcUserConfig = $config['zfcuser'];
+                    return new \ZfcUser\Option\ModuleOptions($zfcUserConfig);
+                },
+
+                'zfcuser_user_service' => function($sm) {
+                    $service = new \ZfcUser\Service\User();
+                    $service->setServiceLocator($sm);
+                    return $service;
+                },
+
                 'ZfcUser\View\Helper\ZfcUserIdentity' => function ($sm) {
                     $viewHelper = new View\Helper\ZfcUserIdentity;
                     $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
@@ -66,7 +85,6 @@ class Module implements
                         $sm->get('ZfcUser\Authentication\Storage\Db'),
                         $sm->get('ZfcUser\Authentication\Adapter\AdapterChain')
                     );
-                    return $authService;
                 },
 
                 'ZfcUser\Authentication\Adapter\AdapterChain' => function ($sm) {
@@ -83,7 +101,7 @@ class Module implements
                 },
 
                 'zfcuser_register_form' => function ($sm) {
-                    $form = new \ZfcUser\Form\Register();
+                    $form = new \ZfcUser\Form\Register($sm->get('zfcuser_module_options'));
                     //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
                     $form->setInputFilter($sm->get('ZfcUser\Form\RegisterFilter'));
                     $form->setHydrator($sm->get('zfcuser_user_hydrator'));
@@ -135,37 +153,12 @@ class Module implements
                 'ZfcUser\Form\RegisterFilter' => function($sm) {
                     return new \ZfcUser\Form\RegisterFilter(
                         $sm->get('zfcuser_uemail_validator'),
-                        $sm->get('zfcuser_uusername_validator')
+                        $sm->get('zfcuser_uusername_validator'),
+                        $sm->get('zfcuser_module_options')
                     );
                 },
             ),
         );
     }
 
-    public function modulesLoaded($e)
-    {
-        $config = $e->getConfigListener()->getMergedConfig(false);
-        static::$options = $config['zfcuser'];
-
-        // Set default if not overridden previously.  This is necessary
-        // due to the way config merging is implemented, as specifying
-        // this default in module.config.php would mean it could never
-        // be overridden (ie: array('username') would not be possible
-        if (!isset(static::$options['auth_identity_fields'])) {
-            static::$options['auth_identity_fields'] = array( 'email' );
-        }
-
-        static::$options['auth_identity_fields'] = array_unique(static::$options['auth_identity_fields']);
-    }
-
-    /**
-     * @TODO: Come up with a better way of handling module settings/options
-     */
-    public static function getOption($option)
-    {
-        if (!isset(static::$options[$option])) {
-            return null;
-        }
-        return static::$options[$option];
-    }
 }

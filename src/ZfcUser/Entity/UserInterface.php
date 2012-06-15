@@ -1,6 +1,8 @@
 <?php
 
-namespace ZfcUser\Model;
+namespace ZfcUser\Entity;
+
+use DateTime;
 
 interface UserInterface
 {
@@ -15,7 +17,7 @@ interface UserInterface
      * Set userId.
      *
      * @param int $userId the value to be set
-     * @return User
+     * @return UserInterface
      */
     public function setUserId($userId);
  
@@ -30,7 +32,7 @@ interface UserInterface
      * Set username.
      *
      * @param string $username the value to be set
-     * @return User
+     * @return UserInterface
      */
     public function setUsername($username);
  
@@ -45,7 +47,7 @@ interface UserInterface
      * Set email.
      *
      * @param string $email the value to be set
-     * @return User
+     * @return UserInterface
      */
     public function setEmail($email);
  
@@ -60,7 +62,7 @@ interface UserInterface
      * Set displayName.
      *
      * @param string $displayName the value to be set
-     * @return User
+     * @return UserInterface
      */
     public function setDisplayName($displayName);
  
@@ -75,7 +77,7 @@ interface UserInterface
      * Set password.
      *
      * @param string $password the value to be set
-     * @return User
+     * @return UserInterface
      */
     public function setPassword($password);
  
@@ -90,7 +92,7 @@ interface UserInterface
      * Set lastLogin.
      *
      * @param mixed $lastLogin the value to be set
-     * @return User
+     * @return UserInterface
      */
     public function setLastLogin($lastLogin);
  
@@ -108,7 +110,7 @@ interface UserInterface
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
      * @param $lastIp the value to be set
-     * @return User
+     * @return UserInterface
      */
     public function setLastIp($lastIp);
  
@@ -123,7 +125,7 @@ interface UserInterface
      * Set registerTime.
      *
      * @param string $registerTime the value to be set
-     * @return User
+     * @return UserInterface
      */
     public function setRegisterTime($registerTime);
  
@@ -141,7 +143,7 @@ interface UserInterface
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
      * @param $registerIp the value to be set
-     * @return User
+     * @return UserInterface
      */
     public function setRegisterIp($registerIp);
  
@@ -156,6 +158,7 @@ interface UserInterface
      * Set active.
      *
      * @param bool $active the value to be set
+     * @return UserInterface
      */
     public function setActive($active);
  
@@ -170,22 +173,8 @@ interface UserInterface
      * Set enabled.
      *
      * @param bool $enabled the value to be set
+     * @return UserInterface
      */
     public function setEnabled($enabled);
 
-    /**
-     * Convert the model to an array 
-     * 
-     * @return array
-     */
-    public function toArray();
-
-    /**
-     * Convert an array into a model instance 
-     * 
-     * @param array $array 
-     * @static
-     * @return User
-     */
-    public static function fromArray($array);
 }

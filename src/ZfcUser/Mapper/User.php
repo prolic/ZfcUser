@@ -5,7 +5,6 @@ namespace ZfcUser\Mapper;
 use ArrayObject;
 use DateTime;
 use ZfcBase\Mapper\AbstractDbMapper;
-use ZfcBase\Model\AbstractModel;
 use ZfcUser\Module as ZfcUser;
 
 class User extends AbstractDbMapper

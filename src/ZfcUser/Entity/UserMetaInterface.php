@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfcUser\Model;
+namespace ZfcUser\Entity;
 
 interface UserMetaInterface
 {

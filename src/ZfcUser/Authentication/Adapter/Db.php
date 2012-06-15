@@ -9,7 +9,7 @@ use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
 use ZfcBase\Mapper\DataMapperInterface as UserMapper;
 use ZfcUser\Module as ZfcUser;
-use ZfcUser\Repository\UserInterface as UserRepositoryInterface;
+use ZfcUser\Repository\User as UserRepositoryInterface;
 use ZfcUser\Util\Password;
 
 class Db extends AbstractAdapter implements ServiceManagerAwareInterface

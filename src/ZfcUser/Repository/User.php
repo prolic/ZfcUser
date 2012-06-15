@@ -10,7 +10,7 @@ use ZfcBase\Repository\AbstractDbRepository;
 use ZfcUser\Mapper\User as UserMapper;
 use ZfcUser\Module as ZfcUser;
 
-class User extends AbstractDbRepository implements UserInterface
+class User extends AbstractDbRepository
 {
     /**
      * @var UserMapper

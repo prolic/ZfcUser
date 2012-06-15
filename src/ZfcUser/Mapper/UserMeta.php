@@ -6,7 +6,7 @@ use ArrayObject;
 use ZfcBase\Mapper\AbstractDbMapper;
 use ZfcUser\Module as ZfcUser;
 
-class UserMeta extends AbstractDbMapper implements UserMetaInterface
+class UserMeta extends AbstractDbMapper
 {
     protected $tableName = 'user_meta';
 

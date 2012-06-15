@@ -1,8 +1,8 @@
 <?php
 return array(
     'zfcuser' => array(
-        'user_model_class'          => 'ZfcUser\Model\User',
-        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
+        'user_entity_class'          => 'ZfcUser\Model\User',
+        'usermeta_entity_class'      => 'ZfcUser\Model\UserMeta',
         'enable_registration'       => true,
         //NOTE: Please override the setting below via your zfcuser.global.php file
         //      Uncommenting the line below will break any overrides in later config files
@@ -12,7 +12,7 @@ return array(
         'enable_display_name'       => false,
         'require_activation'        => false,
         'login_after_registration'  => true,
-        'registration_form_captcha' => true,
+        'use_registration_form_captcha' => true,
         'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
         'blowfish_cost'             => 10,         // integer between 4 and 31
         'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999

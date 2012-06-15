@@ -39,6 +39,11 @@ class UserController extends ActionController
     protected $failedLoginMessage = 'Authentication failed. Please try again.';
 
     /**
+     * @var UserControllerOptionsInterface
+     */
+    protected $options;
+
+    /**
      * User page 
      */
     public function indexAction()
@@ -57,7 +62,7 @@ class UserController extends ActionController
         $request = $this->getRequest();
         $form    = $this->getLoginForm();
 
-        if (ZfcUser::getOption('use_redirect_parameter_if_present') && $request->query()->get('redirect')) {
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->query()->get('redirect')) {
             $redirect = $request->query()->get('redirect');
         } else {
             $redirect = false;
@@ -118,7 +123,7 @@ class UserController extends ActionController
             return $this->redirect()->toRoute('zfcuser/login');
         }
 
-        if (ZfcUser::getOption('use_redirect_parameter_if_present') && $request->post()->get('redirect')) {
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->post()->get('redirect')) {
             return $this->redirect()->toUrl($request->post()->get('redirect'));
         }
 
@@ -138,13 +143,13 @@ class UserController extends ActionController
         $service = $this->getUserService();
         $form = $service->getRegisterForm();
 
-        if ($request->isPost() && ZfcUser::getOption('enable_registration')) {
+        if ($request->isPost() && $this->getOptions()->getEnableRegistration()) {
             $data = $request->post()->toArray();
             try {
                 $user = $service->register($data);
-                if (ZfcUser::getOption('login_after_registration')) {
+                if ($this->getOptions()->getLoginAfterRegistration()) {
                     $post = $request->post();
-                    $identityFields = ZfcUser::getOption('auth_identity_fields');
+                    $identityFields = $this->getOptions()->getAuthIdentityFields();
                     if (in_array('email', $identityFields)) {
                         $post['identity']   = $user->getEmail();
                     } elseif(in_array('username', $identityFields)) { 
@@ -160,6 +165,7 @@ class UserController extends ActionController
         }
         return array(
             'registerForm' => $form,
+            'enableRegistration' => $this->getOptions()->getEnableRegistration()
         );
     }
 
@@ -200,4 +206,31 @@ class UserController extends ActionController
         }
         return $this;
     }
+
+    /**
+     * set options
+     *
+     * @param UserControllerOptionsInterface $options
+     * @return UserController
+     */
+    public function setOptions(UserControllerOptionsInterface $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * get options
+     *
+     * @return UserControllerOptionsInterface
+     */
+    public function getOptions()
+    {
+        if (!$this->options instanceof UserControllerOptionsInterface) {
+            $this->setOptions($this->getServiceLocator()->get('zfcuser_user_controller_options'));
+        }
+        return $this->options;
+    }
+
+
 }
