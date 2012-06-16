@@ -8,6 +8,7 @@ use Zend\Form\FormInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use ZfcUser\Entity\UserInterface;
 use ZfcUser\Entity\UserMetaInterface;
+use ZfcUser\Persistence\UserManagerInterface;
 
 
 interface UserServiceInterface extends
@@ -22,22 +23,6 @@ interface UserServiceInterface extends
      * @throws Exception\InvalidArgumentException
      */
     public function register(array $data);
-
-    /**
-     * find one by username
-     *
-     * @param string $username
-     * @return UserInterface|null
-     */
-    public function findOneByUsername($username);
-
-    /**
-     * find one by email address
-     *
-     * @param string $emailAddress
-     * @return UserInterface|null
-     */
-    public function findOneByEmail($emailAddress);
 
     /**
      * get authentication service
@@ -70,30 +55,6 @@ interface UserServiceInterface extends
     public function setRegisterForm(FormInterface $registerForm);
 
     /**
-     * persist user
-     *
-     * @param UserInterface $user
-     * @param bool $flush
-     */
-    public function persistUser(UserInterface $user, $flush = false);
-
-    /**
-     * persist user meta
-     *
-     * @param UserMetaInterface $userMeta
-     * @param bool $flush
-     */
-    public function persistUserMeta(UserMetaInterface $userMeta, $flush = false);
-
-    /**
-     * remove user
-     *
-     * @param UserInterface $user
-     * @param bool $flush
-     */
-    public function removeUser(UserInterface $user, $flush = false);
-
-    /**
      * set service options
      *
      * @param UserServiceOptionsInterface $options
@@ -106,4 +67,20 @@ interface UserServiceInterface extends
      * @return UserServiceOptionsInterface
      */
     public function getOptions();
+
+    /**
+     * get user manager
+     *
+     * @return UserManagerInterface
+     */
+    public function getUserManager();
+
+    /**
+     * set user manager
+     *
+     * @param UserManagerInterface $userManager
+     * @return UserServiceInterface
+     */
+    public function setUserManager(UserManagerInterface $userManager);
+
 }

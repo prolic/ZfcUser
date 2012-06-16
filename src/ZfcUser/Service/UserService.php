@@ -9,9 +9,10 @@ use Zend\Form\FormInterface;
 use ZfcBase\Service\AbstractService;
 use ZfcUser\Entity\UserInterface;
 use ZfcUser\Entity\UserMetaInterface;
+use ZfcUser\Persistence\UserManagerInterface;
 use ZfcUser\Util\Password;
 
-abstract class AbstractUserService extends AbstractService implements UserServiceInterface
+class UserService extends AbstractService implements UserServiceInterface
 {
 
     /**
@@ -38,6 +39,11 @@ abstract class AbstractUserService extends AbstractService implements UserServic
      * @var UserServiceOptionsInterface
      */
     protected $options;
+
+    /**
+     * @var UserManagerInterface
+     */
+    protected $userManager;
 
     /**
      * register
@@ -82,7 +88,8 @@ abstract class AbstractUserService extends AbstractService implements UserServic
 
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
         try {
-            $this->persistUser($user, true); // force immediate write
+            $this->getUserManager()->persist($user);
+            $this->getUserManager()->flush();
         } catch (\Exception $e) {
             throw new Exception\RegistrationException('error on persistence');
         }
@@ -142,7 +149,7 @@ abstract class AbstractUserService extends AbstractService implements UserServic
      */
     protected function newUser()
     {
-        $className = $this->getUserClassName();
+        $className = $this->getOptions()->getUserEntityClass();
         return new $className;
     }
 
@@ -153,7 +160,7 @@ abstract class AbstractUserService extends AbstractService implements UserServic
      */
     protected function newUserMeta()
     {
-        $className = $this->getUserMetaClassName();
+        $className = $this->getOptions()->getUserMetaEntityClass();
         return new $className;
     }
 
@@ -178,6 +185,31 @@ abstract class AbstractUserService extends AbstractService implements UserServic
             $this->setOptions($this->getServiceLocator()->get('zfcuser_user_service_options'));
         }
         return $this->options;
+    }
+
+    /**
+     * get user manager
+     *
+     * @return UserManagerInterface
+     */
+    public function getUserManager()
+    {
+        if (!$this->userManager instanceof UserManagerInterface) {
+            $this->setUserManager($this->getServiceLocator()->get('zfcuser_user_manager'));
+        }
+        return $this->userManager;
+    }
+
+    /**
+     * set user manager
+     *
+     * @param UserManagerInterface $userManager
+     * @return UserService
+     */
+    public function setUserManager(UserManagerInterface $userManager)
+    {
+        $this->userManager = $userManager;
+        return $this;
     }
 
 
