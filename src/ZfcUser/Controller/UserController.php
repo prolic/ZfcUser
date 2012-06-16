@@ -6,7 +6,7 @@ use Zend\Form\Form;
 use Zend\Mvc\Controller\ActionController;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\View\Model\ViewModel;
-use ZfcUser\Service\User as UserService;
+use ZfcUser\Service\UserService;
 use ZfcUser\Form\LoginFilter;
 use ZfcUser\Module as ZfcUser;
 

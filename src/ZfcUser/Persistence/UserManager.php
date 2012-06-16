@@ -3,13 +3,27 @@
 namespace ZfcUser\Persistence;
 
 use DateTime;
+use Zend\Db\TableGateway\AbstractTableGateway;
+use Zend\Stdlib\Hydrator\HydratorInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use ZfcBase\Persistence\AbstractDefaultTableGatewayManager;
 use ZfcUser\Entity\UserInterface;
 
-class UserManager extends AbstractDefaultTableGatewayManager implements UserManagerInterface
+class UserManager extends AbstractDefaultTableGatewayManager implements
+    UserManagerInterface,
+    ServiceLocatorAwareInterface
 {
 
+    /**
+     * @var UserManagerOptions
+     */
     protected $options;
+
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
 
     /**
      * creates a user from row
@@ -125,6 +139,9 @@ class UserManager extends AbstractDefaultTableGatewayManager implements UserMana
      */
     public function getOptions()
     {
+        if (!$this->options instanceof UserManagerOptions) {
+            $this->setOptions($this->getServiceLocator()->get('zfcuser_user_manager_options'));
+        }
         return $this->options;
     }
 
@@ -133,5 +150,48 @@ class UserManager extends AbstractDefaultTableGatewayManager implements UserMana
 
     }
 
+    /**
+     * set service locator
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return UserManager
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
+
+    /**
+     * get service locator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    /**
+     * @return AbstractTableGateway
+     */
+    public function getTableGateway()
+    {
+        if (!$this->tableGateway instanceof AbstractTableGateway) {
+            $this->setTableGateway($this->getServiceLocator()->get('zfcuser_user_tablegateway'));
+        }
+        return $this->tableGateway;
+    }
+
+    /**
+     * @return HydratorInterface
+     */
+    public function getHydrator()
+    {
+        if (!$this->hydrator instanceof HydratorInterface) {
+            $this->setHydrator($this->getServiceLocator()->get('zfcuser_user_hydrator'));
+        }
+        return $this->hydrator;
+    }
 
 }

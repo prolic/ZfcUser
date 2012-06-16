@@ -3,7 +3,7 @@
 namespace ZfcUser\Validator;
 
 use Zend\Validator\AbstractValidator,
-    ZfcUser\Repository\User as UserInterface;
+    ZfcUser\Persistence\UserManagerInterface as UserManager;
 
 abstract class AbstractRecord extends AbstractValidator
 {
@@ -22,9 +22,9 @@ abstract class AbstractRecord extends AbstractValidator
     );
 
     /**
-     * @var UserInterface
+     * @var UserManager
      */
-    protected $repository;
+    protected $userManager;
 
     /**
      * @var string
@@ -47,24 +47,24 @@ abstract class AbstractRecord extends AbstractValidator
     }
 
     /**
-     * getMapper 
+     * get user manager
      * 
-     * @return UserInterface
+     * @return UserManager
      */
-    public function getRepository()
+    public function getUserManager()
     {
-        return $this->repository;
+        return $this->userManager;
     }
 
     /**
-     * setMapper 
+     * get user manager
      * 
-     * @param UserInterface $repository
+     * @param UserManager $repository
      * @return AbstractRecord
      */
-    public function setRepository(UserInterface $repository)
+    public function setUserManager(UserManager $manager)
     {
-        $this->repository = $repository;
+        $this->userManager = $manager;
         return $this;
     }
 
@@ -101,11 +101,11 @@ abstract class AbstractRecord extends AbstractValidator
 
         switch ($this->getKey()) {
             case 'email':
-                $result = $this->getRepository()->findByEmail($value);
+                $result = $this->getUserManager()->findOneByEmailAddress($value);
                 break; 
 
             case 'username':
-                $result = $this->getRepository()->findByUsername($value);
+                $result = $this->getUserManager()->findOneByUsername($value);
                 break;
 
             default:

@@ -18,7 +18,7 @@ class RegisterFilter extends InputFilter
 
     public function __construct($emailValidator, $usernameValidator, RegistrationOptionsInterface $options)
     {
-        $this->options = $options;
+        $this->setOptions($options);
         $this->emailValidator = $emailValidator;
         $this->usernameValidator = $usernameValidator;
 

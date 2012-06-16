@@ -2,7 +2,9 @@
 
 namespace ZfcUser\Controller;
 
-interface UserControllerOptionsInterface
+use ZfcUser\Authentication\AuthenticationOptions;
+
+interface UserControllerOptionsInterface extends AuthenticationOptions
 {
 
     public function setUseRedirectParameterIfPresent($useRedirectParameterIfPresent);
@@ -17,7 +19,4 @@ interface UserControllerOptionsInterface
 
     public function getLoginAfterRegistration();
 
-    public function setAuthIdentityFields($authIdentityFields);
-
-    public function getAuthIdentityFields();
 }
