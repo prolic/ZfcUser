@@ -8,9 +8,9 @@ use ZfcBase\Form\ProvidesEventsForm;
 
 class Base extends ProvidesEventsForm
 {
-    public function __construct()
+    public function __construct($name = null)
     {
-        parent::__construct();
+        parent::__construct($name = null);
 
         $this->add(array(
             'name' => 'username',

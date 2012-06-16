@@ -16,10 +16,14 @@ class Register extends Base
      */
     protected $options;
 
-    public function __construct(RegistrationOptionsInterface $options)
+    /**
+     * @param string|null $name
+     * @param RegistrationOptionsInterface $options
+     */
+    public function __construct($name = null, RegistrationOptionsInterface $options)
     {
         $this->setOptions($options);
-        parent::__construct();
+        parent::__construct($name);
         
         $this->remove('userId');
         if (!$this->getOptions()->getEnableUsername()) {
@@ -39,11 +43,6 @@ class Register extends Base
         $this->captcha_element= $captcha_element;
     }
     
-    public function initLate()
-    {
-        parent::initLate();
-    }
-
     /**
      * set options
      *

@@ -5,12 +5,19 @@ namespace ZfcUser\Form;
 use Zend\Form\Form;
 use Zend\Form\Element\Csrf;
 use ZfcBase\Form\ProvidesEventsForm;
+use ZfcUser\Authentication\AuthenticationOptions;
 use ZfcUser\Module as ZfcUser;
 
 class Login extends ProvidesEventsForm
 {
-    public function __construct($name = null)
+    /**
+     * @var AuthenticationOptions
+     */
+    protected $options;
+
+    public function __construct($name = null, AuthenticationOptions $options)
     {
+        $this->setOptions($options);
         parent::__construct($name);
 
         $this->add(array(
@@ -24,7 +31,7 @@ class Login extends ProvidesEventsForm
         $emailElement = $this->get('identity');
         $label = $emailElement->getAttribute('label');
         // @TODO: make translation-friendly
-        foreach (ZfcUser::getOption('auth_identity_fields') as $mode) {
+        foreach ($this->getOptions()->getAuthIdentityFields() as $mode) {
             $label = (!empty($label) ? $label . ' or ' : '') . ucfirst($mode);
         }
         $emailElement->setAttribute('label', $label);
@@ -48,5 +55,27 @@ class Login extends ProvidesEventsForm
         ));
 
         $this->events()->trigger('init', $this);
+    }
+
+    /**
+     * set options
+     *
+     * @param AuthenticationOptions $options
+     * @return Login
+     */
+    public function setOptions(AuthenticationOptions $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * get options
+     *
+     * @return AuthenticationOptions
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }
