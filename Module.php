@@ -95,13 +95,13 @@ class Module implements
                 },
 
                 'zfcuser_login_form' => function($sm) {
-                    $form = new \ZfcUser\Form\Login('login', $sm->get('zfcuser_module_options'));
+                    $form = new \ZfcUser\Form\Login(null, $sm->get('zfcuser_module_options'));
                     // TODO set hydrator and input filter?
                     return $form;
                 },
 
                 'zfcuser_register_form' => function ($sm) {
-                    $form = new \ZfcUser\Form\Register('register', $sm->get('zfcuser_module_options'));
+                    $form = new \ZfcUser\Form\Register(null, $sm->get('zfcuser_module_options'));
                     //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
                     $form->setInputFilter($sm->get('ZfcUser\Form\RegisterFilter'));
                     $form->setHydrator($sm->get('zfcuser_user_hydrator'));
@@ -130,8 +130,6 @@ class Module implements
                 },
 
                 'ZfcUser\Form\RegisterFilter' => function($sm) {
-                    return new \Zend\InputFilter\InputFilter();
-
                     return new \ZfcUser\Form\RegisterFilter(
                         $sm->get('zfcuser_uemail_validator'),
                         $sm->get('zfcuser_uusername_validator'),

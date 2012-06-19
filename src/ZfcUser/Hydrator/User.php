@@ -24,19 +24,19 @@ class User implements HydratorInterface
         $data = array();
         $data['id'] = $object->getId();
         $data['username'] = $object->getUsername();
-        $data['email_address'] = $object->getEmailAddress();
-        $data['display_name'] = $object->getDisplayName();
+        $data['emailAddress'] = $object->getEmailAddress();
+        $data['displayName'] = $object->getDisplayName();
         $data['password'] = $object->getPassword();
         $lastLogin = $object->getLastLogin();
         if ($lastLogin instanceof DateTime) {
-            $data['last_login'] = $lastLogin->format('Y-m-d H:i:s');
+            $data['lastLogin'] = $lastLogin->format('Y-m-d H:i:s');
         }
-        $data['last_ip'] = $object->getLastIp();
+        $data['lastIp'] = $object->getLastIp();
         $registerTime = $object->getRegisterTime();
         if ($registerTime instanceof DateTime) {
-            $data['register_time'] = $registerTime->format('Y-m-d H:i:s');
+            $data['registerTime'] = $registerTime->format('Y-m-d H:i:s');
         }
-        $data['register_ip'] = $object->getRegisterIp();
+        $data['registerIp'] = $object->getRegisterIp();
         $data['active'] = $object->getActive();
         $data['enabled'] = $object->getEnabled();
         return $data;
@@ -61,26 +61,26 @@ class User implements HydratorInterface
         if (isset($data['username'])) {
             $object->setUsername($data['username']);
         }
-        if (isset($data['email_address'])) {
-            $object->setEmailAddress($data['email_address']);
+        if (isset($data['emailAddress'])) {
+            $object->setEmailAddress($data['emailAddress']);
         }
-        if (isset($data['display_name'])) {
-            $object->setDisplayName($data['display_name']);
+        if (isset($data['displayName'])) {
+            $object->setDisplayName($data['displayName']);
         }
         if (isset($data['password'])) {
             $object->setPassword($data['password']);
         }
-        if (isset($data['last_login'])) {
-            $object->setLastLogin(new DateTime($data['last_login']));
+        if (isset($data['lastLogin'])) {
+            $object->setLastLogin(new DateTime($data['lastLogin']));
         }
-        if (isset($data['last_ip'])) {
-            $object->setLastIp($data['last_ip']);
+        if (isset($data['lastIp'])) {
+            $object->setLastIp($data['lastIp']);
         }
-        if (isset($data['register_time'])) {
-            $object->setRegisterTime(new DateTime($data['register_time']));
+        if (isset($data['registerTime'])) {
+            $object->setRegisterTime(new DateTime($data['registerTime']));
         }
-        if (isset($data['register_ip'])) {
-            $object->setRegisterIp($data['register_ip']);
+        if (isset($data['registerIp'])) {
+            $object->setRegisterIp($data['registerIp']);
         }
         if (isset($data['active'])) {
             $object->setActive($data['active']);

@@ -4,7 +4,7 @@ namespace ZfcUser\Form;
 
 use Zend\InputFilter\InputFilter;
 use ZfcUser\Module as ZfcUser;
-use ZfcUser\Option\RegistrationOptionsInterface;
+use ZfcUser\Options\RegistrationOptionsInterface;
 
 class RegisterFilter extends InputFilter
 {
@@ -40,7 +40,7 @@ class RegisterFilter extends InputFilter
         }
 
         $this->add(array(
-            'name'          => 'email',
+            'name'          => 'emailAddress',
             'required'      => true,
             'validators'    => array(
                 array(
@@ -52,7 +52,7 @@ class RegisterFilter extends InputFilter
 
         if ($this->getOptions()->getEnableDisplayName()) {
             $this->add(array(
-                'name'          => 'display_name',
+                'name'          => 'displayName',
                 'required'      => true,
                 'filters'       => array(array('name' => 'StringTrim')),
                 'validators'    => array(

@@ -59,6 +59,7 @@ class UserService extends AbstractService implements UserServiceInterface
         $form = $this->getRegisterForm();
         $form->bind($user);
         $form->setData($data);
+
         if (!$form->isValid()) {
             throw new Exception\InvalidArgumentException('invalid data');
         }
@@ -94,8 +95,6 @@ class UserService extends AbstractService implements UserServiceInterface
             $this->getUserManager()->persist($user);
             $this->getUserManager()->flush();
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
-            die;
             throw new Exception\RegistrationException('error on persistence');
         }
         return $user;

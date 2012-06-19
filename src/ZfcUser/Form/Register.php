@@ -25,12 +25,12 @@ class Register extends Base
         $this->setOptions($options);
         parent::__construct($name);
         
-        $this->remove('userId');
+        $this->remove('id');
         if (!$this->getOptions()->getEnableUsername()) {
             $this->remove('username');
         }
         if (!$this->getOptions()->getEnableDisplayName()) {
-            $this->remove('display_name');
+            $this->remove('displayName');
         }
         if ($this->getOptions()->getUseRegistrationFormCaptcha() && $this->captcha_element) {
             $this->add($this->captcha_element, array('name'=>'captcha'));

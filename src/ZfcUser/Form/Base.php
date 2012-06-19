@@ -21,7 +21,7 @@ class Base extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'name' => 'email',
+            'name' => 'emailAddress',
             'attributes' => array(
                 'label' => 'Email',
                 'type' => 'text'
@@ -29,7 +29,7 @@ class Base extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'name' => 'display_name',
+            'name' => 'displayName',
             'attributes' => array(
                 'label' => 'Display Name',
                 'type' => 'text'
@@ -61,7 +61,7 @@ class Base extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'name' => 'userId',
+            'name' => 'id',
             'attributes' => array(
                 'type' => 'hidden'
             ),
