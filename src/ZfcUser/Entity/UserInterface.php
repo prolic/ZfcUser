@@ -11,7 +11,7 @@ interface UserInterface
      *
      * @return int userId
      */
-    public function getUserId();
+    public function getId();
  
     /**
      * Set userId.
@@ -19,7 +19,7 @@ interface UserInterface
      * @param int $userId the value to be set
      * @return UserInterface
      */
-    public function setUserId($userId);
+    public function setId($userId);
  
     /**
      * Get username.
@@ -37,19 +37,19 @@ interface UserInterface
     public function setUsername($username);
  
     /**
-     * Get email.
+     * Get email address
      *
      * @return string email
      */
-    public function getEmail();
+    public function getEmailAddress();
  
     /**
-     * Set email.
+     * Set email address
      *
-     * @param string $email the value to be set
+     * @param string $emailAddress the value to be set
      * @return UserInterface
      */
-    public function setEmail($email);
+    public function setEmailAddress($emailAddress);
  
     /**
      * Get displayName.
@@ -91,10 +91,10 @@ interface UserInterface
     /**
      * Set lastLogin.
      *
-     * @param mixed $lastLogin the value to be set
+     * @param DateTime $lastLogin the value to be set
      * @return UserInterface
      */
-    public function setLastLogin($lastLogin);
+    public function setLastLogin(DateTime $lastLogin);
  
     /**
      * Get lastIp.
@@ -124,10 +124,10 @@ interface UserInterface
     /**
      * Set registerTime.
      *
-     * @param string $registerTime the value to be set
+     * @param DateTime $registerTime the value to be set
      * @return UserInterface
      */
-    public function setRegisterTime($registerTime);
+    public function setRegisterTime(DateTime $registerTime);
  
     /**
      * Get registerIp.

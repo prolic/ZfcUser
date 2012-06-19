@@ -6,6 +6,7 @@ use Zend\Form\Form;
 use Zend\Mvc\Controller\ActionController;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\View\Model\ViewModel;
+use ZfcUser\Options\UserControllerOptionsInterface;
 use ZfcUser\Service\UserService;
 use ZfcUser\Form\LoginFilter;
 use ZfcUser\Module as ZfcUser;
@@ -227,7 +228,7 @@ class UserController extends ActionController
     public function getOptions()
     {
         if (!$this->options instanceof UserControllerOptionsInterface) {
-            $this->setOptions($this->getServiceLocator()->get('zfcuser_user_controller_options'));
+            $this->setOptions($this->getServiceLocator()->get('zfcuser_module_options'));
         }
         return $this->options;
     }

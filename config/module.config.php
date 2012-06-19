@@ -1,8 +1,7 @@
 <?php
 return array(
     'zfcuser' => array(
-        'user_entity_class'          => 'ZfcUser\Model\User',
-        'usermeta_entity_class'      => 'ZfcUser\Model\UserMeta',
+        'user_entity_class' => 'ZfcUser\Entity\User',
         'enable_registration'       => true,
         //NOTE: Please override the setting below via your zfcuser.global.php file
         //      Uncommenting the line below will break any overrides in later config files
@@ -13,10 +12,59 @@ return array(
         'require_activation'        => false,
         'login_after_registration'  => true,
         'use_registration_form_captcha' => true,
-        'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
-        'blowfish_cost'             => 10,         // integer between 4 and 31
-        'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
-        'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
+        'password_salt'   => '546f4e71-1d9f-4c86-9270-e0ee64ef86e5',
+        'password_cost' => 14,
+        'user_manager_options' => array(
+            'table_name' => 'user',
+            'primary_key' => 'id',
+            'class_name' => 'ZfcUser\Entity\User',
+            'map' => array(
+                'id' => array(
+                    'name' => 'user_id',
+                    'type' => 'integer',
+                ),
+                'username' => array(
+                    'name' => 'username',
+                    'type' => 'string'
+                ),
+                'emailAddress' => array(
+                    'name' => 'email',
+                    'type' => 'string'
+                ),
+                'displayName' => array(
+                    'name' => 'display_name',
+                    'type' => 'string'
+                ),
+                'password' => array(
+                    'name' => 'password',
+                    'type' => 'string'
+                ),
+                'lastLogin' => array(
+                    'name' => 'last_login',
+                    'type' => 'datetime'
+                ),
+                'lastIp' => array(
+                    'name' => 'last_ip',
+                    'type' => 'string'
+                ),
+                'registerTime' => array(
+                    'name' => 'register_time',
+                    'type' => 'datetime'
+                ),
+                'registerIp' => array(
+                    'name' => 'register_ip',
+                    'type' => 'string'
+                ),
+                'active' => array(
+                    'name' => 'active',
+                    'type' => 'bool'
+                ),
+                'enabled' => array(
+                    'name' => 'enabled',
+                    'type' => 'bool'
+                )
+            )
+        )
     ),
 
     'view_manager' => array(

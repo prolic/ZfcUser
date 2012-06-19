@@ -32,14 +32,6 @@ $settings = array(
     //'enable_registration' => true,
 
     /**
-     * UserMeta Model Entity Class
-     *
-     * Name of Entity class to use. Useful for using your own entity class 
-     * instead of the default one provided. Default is ZfcUser\Model\UserMeta.
-     */
-    //'usermeta_model_class' => 'ZfcUser\Model\UserMeta',
-
-    /**
      * Enable Username 
      *
      * Enables username field on the registration form, and allows users to log 
@@ -124,45 +116,21 @@ $settings = array(
      */
 
     /**
-     * Password Hash Algorithm
+     * Password Salt
      *
-     * Name of the hashing algorithm to use for hashing. Supported 
-     * algorithms are blowfish, sha512, and sha256. Default is blowfish. 
-     *
-     * Accepted values: 'blowfish', 'sha512', and 'sha256'
+     * Salt to be used for password generation.
      */
-    //'password_hash_algorithm' => 'blowfish',
+    //'password_salt' => '546f4e71-1d9f-4c86-9270-e0ee64ef86e5',
 
     /**
-     * Blowfish Cost
+     * Password Cost
      *
-     * Only used if `password_hash_algorithm` is set to blowfish. The number
-     * represents the base-2 logarithm of the iteration count used for hashing.
-     * Default is 10 (about 10 hashes per second on an i5). 
+     * The cost parameter is an integer value from 4 to 31. The default value is 14,
+     * that is equivalent to 1 second of computation using an Intel Core i5 CPU at 3.3 Ghz.
      *
      * Accepted values: integer between 4 and 31
      */
-    //'blowfish_cost' => 10,
-
-    /**
-     * SHA-512 Rounds
-     *
-     * Only used if `password_hash_algorithm` is set to sha512. The number 
-     * represents the iteration count used for hashing. Default is 5000. 
-     *
-     * Accepted values: integer between 1000 and 999999999
-     */
-    //'sha512_rounds' => 5000,
-
-    /**
-     * SHA-256 Rounds
-     *
-     * Only used if `password_hash_algorithm` is set to sha256. The number 
-     * represents the iteration count used for hashing. Default is 5000. 
-     *
-     * Accepted values: integer between 1000 and 999999999
-     */
-    //'sha256_rounds' => 5000,
+    //'password_cost' => 14,
 
     /**
      * End of ZfcUser configuration

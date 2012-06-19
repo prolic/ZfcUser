@@ -4,13 +4,13 @@ namespace ZfcUser\Service;
 
 use DateTime;
 use Zend\Authentication\AuthenticationService;
+use Zend\Crypt\Password\Bcrypt;
 use Zend\Form\Form;
 use Zend\Form\FormInterface;
 use ZfcBase\Service\AbstractService;
 use ZfcUser\Entity\UserInterface;
-use ZfcUser\Entity\UserMetaInterface;
+use ZfcUser\Options\UserServiceOptionsInterface;
 use ZfcUser\Persistence\UserManagerInterface;
-use ZfcUser\Util\Password;
 
 class UserService extends AbstractService implements UserServiceInterface
 {
@@ -66,7 +66,10 @@ class UserService extends AbstractService implements UserServiceInterface
         $user = $form->getData();
         /* @var $user UserInterface */
 
-        $user->setPassword(Password::hash($user->getPassword()));
+        $bcrypt = new Bcrypt();
+        $bcrypt->setSalt($this->getOptions()->getPasswordSalt());
+        $bcrypt->setCost($this->getOptions()->getPasswordCost());
+        $user->setPassword($bcrypt->create($user->getPassword()));
         $user->setRegisterTime(new DateTime('now'));
         $user->setRegisterIp($_SERVER['REMOTE_ADDR']);
         $user->setEnabled(true);
@@ -91,6 +94,8 @@ class UserService extends AbstractService implements UserServiceInterface
             $this->getUserManager()->persist($user);
             $this->getUserManager()->flush();
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
+            die;
             throw new Exception\RegistrationException('error on persistence');
         }
         return $user;
@@ -154,17 +159,6 @@ class UserService extends AbstractService implements UserServiceInterface
     }
 
     /**
-     * returns new user meta
-     *
-     * @return UserMetaInterface
-     */
-    protected function newUserMeta()
-    {
-        $className = $this->getOptions()->getUserMetaEntityClass();
-        return new $className;
-    }
-
-    /**
      * set service options
      *
      * @param UserServiceOptionsInterface $options
@@ -182,7 +176,7 @@ class UserService extends AbstractService implements UserServiceInterface
     public function getOptions()
     {
         if (!$this->options instanceof UserServiceOptionsInterface) {
-            $this->setOptions($this->getServiceLocator()->get('zfcuser_user_service_options'));
+            $this->setOptions($this->getServiceLocator()->get('zfcuser_module_options'));
         }
         return $this->options;
     }

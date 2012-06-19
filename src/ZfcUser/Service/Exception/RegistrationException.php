@@ -2,6 +2,6 @@
 
 namespace ZfcUser\Service\Exception;
 
-class RegistrationException extends \DomainException implements ExeptionInterface
+class RegistrationException extends \DomainException implements ExceptionInterface
 {
 }

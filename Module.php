@@ -44,28 +44,16 @@ class Module implements
             ),
             'factories' => array(
 
-                'zfcuser_user_controller_options' => function ($sm) {
-                    return $sm->get('zfcuser_module_options');
-                },
-
-                'zfcuser_user_service_options' => function ($sm) {
-                    return $sm->get('zfcuser_module_options');
-                },
-
-                'zfcuser_registeroptions' => function ($sm) {
-                    return $sm->get('zfcuser_module_options');
-                },
-
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Configuration');
                     $zfcUserConfig = $config['zfcuser'];
-                    return new \ZfcUser\Option\ModuleOptions($zfcUserConfig);
+                    return new \ZfcUser\Options\ModuleOptions($zfcUserConfig);
                 },
 
-                'zfcuser_authentication_options' => function ($sm) {
+                'zfcuser_user_manager_options' => function ($sm) {
                     $config = $sm->get('Configuration');
-                    $zfcUserConfig = $config['zfcuser'];
-                    return new \ZfcUser\Option\ModuleOptions($zfcUserConfig);
+                    $options = $config['zfcuser']['user_manager_options'];
+                    return new \ZfcBase\Persistence\DefaultObjectManagerOptions($options);
                 },
 
                 'zfcuser_user_service' => function($sm) {
@@ -76,13 +64,9 @@ class Module implements
 
                 'zfcuser_user_manager' => function ($sm) {
                     $manager = new \ZfcUser\Persistence\UserManager();
-                    $manager->setTableGateway($sm->get(''));
-                },
-
-                'zfcuser_user_tablegateway' => function ($sm) {
-                    $adapter = $sm->get('zfcuser_zend_db_adapter');
-                    $tableGateway = new \Zend\Db\TableGateway\TableGateway('user', $adapter);
-                    return $tableGateway;
+                    $manager->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
+                    $manager->setOptions($sm->get('zfcuser_user_manager_options'));
+                    return $manager;
                 },
 
                 'ZfcUser\View\Helper\ZfcUserIdentity' => function ($sm) {
@@ -125,7 +109,7 @@ class Module implements
                 },
 
                 'zfcuser_user_hydrator' => function ($sm) {
-                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
+                    $hydrator = new \ZfcUser\Hydrator\User();
                     return $hydrator;
                 },
 

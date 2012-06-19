@@ -5,7 +5,7 @@ namespace ZfcUser\Form;
 use Zend\Form\Element\Captcha as Captcha;
 use Zend\Form\Form;
 use ZfcUser\Module;
-use ZfcUser\Option\RegistrationOptionsInterface;
+use ZfcUser\Options\RegistrationOptionsInterface;
 
 class Register extends Base
 {

@@ -7,7 +7,7 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Zend\Form\FormInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use ZfcUser\Entity\UserInterface;
-use ZfcUser\Entity\UserMetaInterface;
+use ZfcUser\Options\UserServiceOptionsInterface;
 use ZfcUser\Persistence\UserManagerInterface;
 
 

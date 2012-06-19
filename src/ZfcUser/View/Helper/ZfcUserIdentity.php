@@ -2,8 +2,9 @@
 
 namespace ZfcUser\View\Helper;
 
-use Zend\View\Helper\AbstractHelper,
-    Zend\Authentication\AuthenticationService;
+use Zend\View\Helper\AbstractHelper;
+use Zend\Authentication\AuthenticationService;
+use ZfcUser\Entity\UserInterface;
 
 class ZfcUserIdentity extends AbstractHelper
 {
@@ -16,7 +17,7 @@ class ZfcUserIdentity extends AbstractHelper
      * __invoke 
      * 
      * @access public
-     * @return ZfcUser\Model\UserInterface
+     * @return UserInterface
      */
     public function __invoke()
     {

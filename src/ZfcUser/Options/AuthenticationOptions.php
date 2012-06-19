@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfcUser\Authentication;
+namespace ZfcUser\Options;
 
 interface AuthenticationOptions
 {

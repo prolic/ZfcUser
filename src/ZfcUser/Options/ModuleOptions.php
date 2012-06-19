@@ -1,13 +1,11 @@
 <?php
 
-namespace ZfcUser\Option;
+namespace ZfcUser\Options;
 
 use Zend\Stdlib\Options;
-use ZfcUser\Controller\UserControllerOptionsInterface;
-use ZfcUser\Service\UserServiceOptionsInterface;
-use ZfcUser\Util\PasswordOptionsInterface;
 
 class ModuleOptions extends Options implements
+    AuthenticationOptions,
     PasswordOptionsInterface,
     UserControllerOptionsInterface,
     UserServiceOptionsInterface
@@ -20,8 +18,6 @@ class ModuleOptions extends Options implements
 
     protected $userEntityClass;
 
-    protected $userMetaEntityClass;
-
     protected $enableRegistration;
 
     protected $enableUsername;
@@ -32,53 +28,36 @@ class ModuleOptions extends Options implements
 
     protected $useRegistrationFormCaptcha;
 
-    protected $passwordHashAlgorithm;
+    protected $passwordSalt;
 
-    protected $blowfishCost;
+    protected $passwordCost;
 
-    protected $sha256Rounds;
-
-    protected $sha512Rounds;
-
-    public function setBlowfishCost($blowfishCost)
+    /**
+     * @param string $key name of option with underscore
+     * @return string name of setter method
+     */
+    protected function assembleSetterNameFromKey($key)
     {
-        $this->blowfishCost = $blowfishCost;
+        $parts = explode('_', $key);
+        $parts = array_map('ucfirst', $parts);
+        $setter = 'set' . implode('', $parts);
+        return $setter;
     }
 
-    public function getBlowfishCost()
+    /**
+     * @see ParameterObject::__set()
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function __set($key, $value)
     {
-        return $this->blowfishCost;
+        $setter = $this->assembleSetterNameFromKey($key);
+        if (method_exists($this, $setter)) {
+            $this->{$setter}($value);
+        }
     }
 
-    public function setPasswordHashAlgorithm($passwordHashAlgorithm)
-    {
-        $this->passwordHashAlgorithm = $passwordHashAlgorithm;
-    }
-
-    public function getPasswordHashAlgorithm()
-    {
-        return $this->passwordHashAlgorithm;
-    }
-
-    public function setSha256Rounds($sha256Rounds)
-    {
-        $this->sha256Rounds = $sha256Rounds;
-    }
-
-    public function getSha256Rounds()
-    {
-        return $this->sha256Rounds;
-    }
-
-    public function setSha512Rounds($sha512Rounds)
-    {
-        $this->sha512Rounds = $sha512Rounds;
-    }
-
-    public function getSha512Rounds()
-    {
-        return $this->sha512Rounds;
-    }
 
     public function setUseRedirectParameterIfPresent($useRedirectParameterIfPresent)
     {
@@ -205,15 +184,24 @@ class ModuleOptions extends Options implements
         return $this->userEntityClass;
     }
 
-    public function setUserMetaEntityClass($userMetaEntityClass)
+    public function setPasswordCost($passwordCost)
     {
-        $this->userMetaEntityClass = $userMetaEntityClass;
+        $this->passwordCost = $passwordCost;
     }
 
-    public function getUserMetaEntityClass()
+    public function getPasswordCost()
     {
-        return $this->userMetaEntityClass;
+        return $this->passwordCost;
     }
 
+    public function setPasswordSalt($passwordSalt)
+    {
+        $this->passwordSalt = $passwordSalt;
+    }
+
+    public function getPasswordSalt()
+    {
+        return $this->passwordSalt;
+    }
 
 }

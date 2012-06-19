@@ -5,7 +5,7 @@ namespace ZfcUser\Form;
 use Zend\Form\Form;
 use Zend\Form\Element\Csrf;
 use ZfcBase\Form\ProvidesEventsForm;
-use ZfcUser\Authentication\AuthenticationOptions;
+use ZfcUser\Options\AuthenticationOptions;
 use ZfcUser\Module as ZfcUser;
 
 class Login extends ProvidesEventsForm

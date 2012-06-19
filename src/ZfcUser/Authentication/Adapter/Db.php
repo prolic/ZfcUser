@@ -7,7 +7,7 @@ use Zend\Authentication\Result as AuthenticationResult;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
-use ZfcUser\Authentication\AuthenticationOptions;
+use ZfcUser\Options\AuthenticationOptions;
 use ZfcUser\Module as ZfcUser;
 use ZfcUser\Persistence\UserManagerInterface as UserManager;
 use ZfcUser\Util\Password;
@@ -202,7 +202,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     public function getOptions()
     {
         if (!$this->options instanceof AuthenticationOptions) {
-            $this->setOptions($this->getServiceManager()->get('zfcuser_authentication_options'));
+            $this->setOptions($this->getServiceManager()->get('zfcuser_module_options'));
         }
         return $this->options;
     }

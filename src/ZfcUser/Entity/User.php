@@ -6,23 +6,23 @@ use DateTime;
 
 class User implements UserInterface
 {
-    protected $user_id;
+    protected $id;
 
     protected $username;
 
-    protected $email;
+    protected $emailAddress;
 
-    protected $display_name;
+    protected $displayName;
 
     protected $password;
 
-    protected $last_login;
+    protected $lastLogin;
 
-    protected $last_ip;
+    protected $lastIp;
 
-    protected $register_time;
+    protected $registerTime;
 
-    protected $register_ip;
+    protected $registerIp;
 
     protected $active;
 
@@ -33,9 +33,9 @@ class User implements UserInterface
      *
      * @return int user_id
      */
-    public function getUserId()
+    public function getId()
     {
-        return $this->user_id;
+        return $this->id;
     }
  
     /**
@@ -44,9 +44,9 @@ class User implements UserInterface
      * @param int $userId the value to be set
      * @return User
      */
-    public function setUserId($userId)
+    public function setId($userId)
     {
-        $this->user_id = (int) $userId;
+        $this->id = (int) $userId;
         return $this;
     }
  
@@ -73,24 +73,24 @@ class User implements UserInterface
     }
  
     /**
-     * Get email.
+     * Get email address
      *
-     * @return string email
+     * @return string email address
      */
-    public function getEmail()
+    public function getEmailAddress()
     {
-        return $this->email;
+        return $this->emailAddress;
     }
  
     /**
-     * Set email.
+     * Set email address
      *
-     * @param string $email the value to be set
+     * @param string $emailAddress the value to be set
      * @return User
      */
-    public function setEmail($email)
+    public function setEmailAddress($emailAddress)
     {
-        $this->email = $email;
+        $this->emailAddress = $emailAddress;
         return $this;
     }
  
@@ -101,12 +101,12 @@ class User implements UserInterface
      */
     public function getDisplayName()
     {
-        if ($this->display_name !== null) {
-            return $this->display_name;
+        if ($this->displayName !== null) {
+            return $this->displayName;
         } elseif ($this->username !== null) {
             return $this->username;
-        } elseif ($this->email !== null) {
-            return $this->email;
+        } elseif ($this->emailAddress !== null) {
+            return $this->emailAddress;
         }
         return null;
     }
@@ -119,7 +119,7 @@ class User implements UserInterface
      */
     public function setDisplayName($displayName)
     {
-        $this->display_name = $displayName;
+        $this->displayName = $displayName;
         return $this;
     }
  
@@ -152,7 +152,7 @@ class User implements UserInterface
      */
     public function getLastLogin()
     {
-        return $this->last_login;
+        return $this->lastLogin;
     }
  
     /**
@@ -163,7 +163,7 @@ class User implements UserInterface
      */
     public function setLastLogin(DateTime $lastLogin)
     {
-        $this->last_login = $lastLogin;
+        $this->lastLogin = $lastLogin;
         return $this;
     }
  
@@ -177,9 +177,9 @@ class User implements UserInterface
     public function getLastIp($long = false)
     {
         if (true === $long) {
-            return $this->last_ip;
+            return $this->lastIp;
         }
-        return long2ip($this->last_ip);
+        return long2ip($this->lastIp);
     }
  
     /**
@@ -191,7 +191,7 @@ class User implements UserInterface
      */
     public function setLastIp($lastIp)
     {
-        $this->last_ip = ip2long($lastIp);
+        $this->lastIp = ip2long($lastIp);
         return $this;
     }
  
@@ -202,7 +202,7 @@ class User implements UserInterface
      */
     public function getRegisterTime()
     {
-        return $this->register_time;
+        return $this->registerTime;
     }
  
     /**
@@ -213,7 +213,7 @@ class User implements UserInterface
      */
     public function setRegisterTime(DateTime $registerTime)
     {
-        $this->register_time = $registerTime;
+        $this->registerTime = $registerTime;
         return $this;
     }
  
@@ -227,9 +227,9 @@ class User implements UserInterface
     public function getRegisterIp($long = false)
     {
         if (true === $long) {
-            return $this->register_ip;
+            return $this->registerIp;
         }
-        return long2ip($this->register_ip);
+        return long2ip($this->registerIp);
     }
  
     /**
@@ -241,7 +241,7 @@ class User implements UserInterface
      */
     public function setRegisterIp($registerIp)
     {
-        $this->register_ip = ip2long($registerIp);
+        $this->registerIp = ip2long($registerIp);
         return $this;
     }
  
