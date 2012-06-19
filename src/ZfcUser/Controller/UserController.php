@@ -76,7 +76,6 @@ class UserController extends ActionController
             );
         }
 
-        $form->setInputFilter(new LoginFilter());
         $form->setData($request->post());
 
         if (!$form->isValid()) {
@@ -144,15 +143,15 @@ class UserController extends ActionController
         $service = $this->getUserService();
         $form = $service->getRegisterForm();
 
-        if ($request->isPost() && $this->getOptions()->getEnableRegistration()) {
+        if ($request->isPost() && $service->getOptions()->getEnableRegistration()) {
             $data = $request->post()->toArray();
             try {
                 $user = $service->register($data);
-                if ($this->getOptions()->getLoginAfterRegistration()) {
+                if ($service->getOptions()->getLoginAfterRegistration()) {
                     $post = $request->post();
-                    $identityFields = $this->getOptions()->getAuthIdentityFields();
-                    if (in_array('email', $identityFields)) {
-                        $post['identity']   = $user->getEmail();
+                    $identityFields = $service->getOptions()->getAuthIdentityFields();
+                    if (in_array('emailAddress', $identityFields)) {
+                        $post['identity']   = $user->getEmailAddress();
                     } elseif(in_array('username', $identityFields)) { 
                         $post['identity']   = $user->getUsername();
                     }
@@ -166,7 +165,7 @@ class UserController extends ActionController
         }
         return array(
             'registerForm' => $form,
-            'enableRegistration' => $this->getOptions()->getEnableRegistration()
+            'enableRegistration' => $service->getOptions()->getEnableRegistration()
         );
     }
 

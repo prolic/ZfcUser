@@ -6,7 +6,7 @@ return array(
         //NOTE: Please override the setting below via your zfcuser.global.php file
         //      Uncommenting the line below will break any overrides in later config files
         //      due to the way config file merging works with array values
-        //'auth_identity_fields'      => array( 'email' ),
+        'auth_identity_fields'      => array( 'emailAddress', 'username' ),
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,

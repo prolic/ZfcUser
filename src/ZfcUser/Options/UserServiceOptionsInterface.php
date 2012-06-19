@@ -6,7 +6,8 @@ use ZfcUser\Options\RegistrationOptionsInterface;
 
 interface UserServiceOptionsInterface extends
     PasswordOptionsInterface,
-    RegistrationOptionsInterface
+    RegistrationOptionsInterface,
+    AuthenticationOptionsInterface
 {
 
     public function setUserEntityClass($userEntityClass);

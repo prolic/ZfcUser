@@ -4,13 +4,13 @@ namespace ZfcUser\Authentication\Adapter;
 
 use DateTime;
 use Zend\Authentication\Result as AuthenticationResult;
+use Zend\Crypt\Password\Bcrypt;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
-use ZfcUser\Options\AuthenticationOptions;
-use ZfcUser\Module as ZfcUser;
+use ZfcUser\Options\AuthenticationOptionsInterface;
+use ZfcUser\Entity\UserInterface;
 use ZfcUser\Persistence\UserManagerInterface as UserManager;
-use ZfcUser\Util\Password;
 
 class Db extends AbstractAdapter implements ServiceManagerAwareInterface
 {
@@ -30,7 +30,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     protected $serviceManager;
 
     /**
-     * @var AuthenticationOptions
+     * @var AuthenticationOptionsInterface
      */
     protected $options;
 
@@ -50,15 +50,16 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         $userObject = NULL;
 
         // Cycle through the configured identity sources and test each
-        $fields = ZfcUser::getOption('auth_identity_fields');
+        $fields = $this->getOptions()->getAuthIdentityFields();
+
         while ( !is_object($userObject) && count($fields) > 0 ) {
             $mode = array_shift($fields);
             switch ($mode) {
                 case 'username':
-                    $userObject = $this->getRepository()->findByUsername($identity);
+                    $userObject = $this->getUserManager()->findOneByUsername($identity);
                     break;
-                case 'email':
-                    $userObject = $this->getRepository()->findByEmail($identity);
+                case 'emailAddress':
+                    $userObject = $this->getUserManager()->findOneByEmailAddress($identity);
                     break;
             }
         }
@@ -70,18 +71,20 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
             return false;
         }
 
-        $credentialHash = Password::hash($credential, $userObject->getPassword());
+        $bcrypt = new Bcrypt();
+        $bcrypt->setSalt($this->getOptions()->getPasswordSalt());
+        $bcrypt->setCost($this->getOptions()->getPasswordCost());
 
-        if ($credentialHash !== $userObject->getPassword()) {
+        if (!$bcrypt->verify($credential, $userObject->getPassword())) {
             // Password does not match
             $e->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
-              ->setMessages(array('Supplied credential is invalid.'));
+                ->setMessages(array('Supplied credential is invalid.'));
             $this->setSatisfied(false);
             return false;
         }
 
         // Success!
-        $e->setIdentity($userObject->getUserId());
+        $e->setIdentity($userObject->getId());
         $this->updateUserLastLogin($userObject)
              ->updateUserPasswordHash($userObject, $credential)
              ->setSatisfied(true);
@@ -92,23 +95,27 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
           ->setMessages(array('Authentication successful.'));
     }
 
-    protected function updateUserPasswordHash($userObject, $password)
+    protected function updateUserPasswordHash(UserInterface $userObject, $password)
     {
-        $newHash = Password::hash($password);
+        $bcrypt = new Bcrypt();
+        $bcrypt->setSalt($this->getOptions()->getPasswordSalt());
+        $bcrypt->setCost($this->getOptions()->getPasswordCost());
+
+        $newHash = $bcrypt->create($password);
         if ($newHash === $userObject->getPassword()) return $this;
 
         $userObject->setPassword($newHash);
 
-        $this->getMapper()->persist($userObject);
+        $this->getUserManager()->persist($userObject);
         return $this;
     }
 
-    protected function updateUserLastLogin($userObject)
+    protected function updateUserLastLogin(UserInterface $userObject)
     {
         $userObject->setLastLogin(new DateTime('now'))
                    ->setLastIp($_SERVER['REMOTE_ADDR']);
 
-        $this->getMapper()->persist($userObject);
+        $this->getUserManager()->persist($userObject);
         return $this;
     }
 
@@ -189,19 +196,19 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     }
 
     /**
-     * @param AuthenticationOptions $options
+     * @param AuthenticationOptionsInterface $options
      */
-    public function setOptions(AuthenticationOptions $options)
+    public function setOptions(AuthenticationOptionsInterface $options)
     {
         $this->options = $options;
     }
 
     /**
-     * @return AuthenticationOptions
+     * @return AuthenticationOptionsInterface
      */
     public function getOptions()
     {
-        if (!$this->options instanceof AuthenticationOptions) {
+        if (!$this->options instanceof AuthenticationOptionsInterface) {
             $this->setOptions($this->getServiceManager()->get('zfcuser_module_options'));
         }
         return $this->options;

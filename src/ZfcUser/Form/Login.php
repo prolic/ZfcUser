@@ -5,17 +5,17 @@ namespace ZfcUser\Form;
 use Zend\Form\Form;
 use Zend\Form\Element\Csrf;
 use ZfcBase\Form\ProvidesEventsForm;
-use ZfcUser\Options\AuthenticationOptions;
+use ZfcUser\Options\AuthenticationOptionsInterface;
 use ZfcUser\Module as ZfcUser;
 
 class Login extends ProvidesEventsForm
 {
     /**
-     * @var AuthenticationOptions
+     * @var AuthenticationOptionsInterface
      */
     protected $options;
 
-    public function __construct($name = null, AuthenticationOptions $options)
+    public function __construct($name = null, AuthenticationOptionsInterface $options)
     {
         $this->setOptions($options);
         parent::__construct($name);
@@ -60,10 +60,10 @@ class Login extends ProvidesEventsForm
     /**
      * set options
      *
-     * @param AuthenticationOptions $options
+     * @param AuthenticationOptionsInterface $options
      * @return Login
      */
-    public function setOptions(AuthenticationOptions $options)
+    public function setOptions(AuthenticationOptionsInterface $options)
     {
         $this->options = $options;
         return $this;
@@ -72,7 +72,7 @@ class Login extends ProvidesEventsForm
     /**
      * get options
      *
-     * @return AuthenticationOptions
+     * @return AuthenticationOptionsInterface
      */
     public function getOptions()
     {

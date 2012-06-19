@@ -6,7 +6,7 @@ use Zend\Authentication\Storage;
 use Zend\Authentication\Storage\StorageInterface;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
-use ZfcBase\Mapper\DataMapperInterface as UserMapper;
+use ZfcUser\Persistence\UserManagerInterface;
 
 class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
 {
@@ -16,9 +16,9 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
     protected $storage;
 
     /**
-     * @var UserMapper
+     * @var UserManagerInterface
      */
-    protected $mapper;
+    protected $userManager;
 
     /**
      * @var mixed
@@ -58,7 +58,7 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
         $identity = $this->getStorage()->read();
 
         if (is_int($identity) || is_scalar($identity)) {
-            $identity = $this->getMapper()->find($identity);
+            $identity = $this->getUserManager()->find($identity);
         }
 
         if ($identity) {
@@ -124,25 +124,25 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
     /**
      * getMapper 
      * 
-     * @return UserMapper
+     * @return UserManagerInterface
      */
-    public function getMapper()
+    public function getUserManager()
     {
-        if (null === $this->mapper) {
-            $this->mapper = $this->getServiceManager()->get('zfcuser_user_mapper');
+        if (null === $this->userManager) {
+            $this->userManager = $this->getServiceManager()->get('zfcuser_user_manager');
         }
-        return $this->mapper;
+        return $this->userManager;
     }
 
     /**
      * setMapper 
      * 
-     * @param UserMapper $mapper
+     * @param UserManagerInterface $mapper
      * @return Db
      */
-    public function setMapper(UserMapper $mapper)
+    public function setUserManager(UserManagerInterface $mapper)
     {
-        $this->mapper = $mapper;
+        $this->userManager = $mapper;
         return $this;
     }
 

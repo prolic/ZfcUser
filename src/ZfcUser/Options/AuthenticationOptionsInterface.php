@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Options;
 
-interface AuthenticationOptions
+interface AuthenticationOptionsInterface extends PasswordOptionsInterface
 {
     public function setAuthIdentityFields($authIdentityFields);
 

@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Options;
 
-use ZfcUser\Options\AuthenticationOptions;
+use ZfcUser\Options\AuthenticationOptionsInterface;
 
 interface UserControllerOptionsInterface
 {

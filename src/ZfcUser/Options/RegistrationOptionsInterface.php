@@ -24,4 +24,8 @@ interface RegistrationOptionsInterface
     public function setRequireActivation($requireActivation);
 
     public function getRequireActivation();
+
+    public function getEnableRegistration();
+
+    public function setEnableRegistration($enableRegistration);
 }

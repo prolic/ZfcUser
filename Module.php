@@ -95,8 +95,9 @@ class Module implements
                 },
 
                 'zfcuser_login_form' => function($sm) {
-                    $form = new \ZfcUser\Form\Login(null, $sm->get('zfcuser_module_options'));
-                    // TODO set hydrator and input filter?
+                    $options = $sm->get('zfcuser_module_options');
+                    $form = new \ZfcUser\Form\Login(null, $options);
+                    $form->setInputFilter(new \ZfcUser\Form\LoginFilter($options));
                     return $form;
                 },
 
