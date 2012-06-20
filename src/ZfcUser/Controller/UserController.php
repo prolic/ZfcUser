@@ -190,7 +190,7 @@ class UserController extends ActionController
     public function getLoginForm()
     {
         if (null === $this->loginForm) {
-            $this->loginForm = $this->getServiceLocator()->get('zfcuser_login_form');
+            $this->setLoginForm($this->getServiceLocator()->get('zfcuser_login_form'));
         }
         return $this->loginForm;
     }
